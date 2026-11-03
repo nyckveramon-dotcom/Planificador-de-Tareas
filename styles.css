@@ -4,6 +4,36 @@
     --verde-carbon-suave: #84978A;
     --blanco-calido: #FFFCF6;
     --crema: #f5f1e7;
-    --verde-oscuro: #293B2D;
+    --verde-oscuro: #374d3c;
 
+}
+
+.header-sidebar {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.55),rgba(0, 0, 0, 0.55)), url(Imagen_paisaje.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 0.5rem;
+    padding: 6rem 1rem;
+    text-align: center;
+    font-family: 'Montagu Slab', cursive sans-serif;
+}
+
+.header-sidebar h3 {
+    color: #FFFCF6;
+    font-weight: 700;
+}
+
+.header-sidebar p {
+    color: #f5f5f5 !important;
+    font-size: 0.85rem;
+    margin-bottom: 0;
+}
+
+.sidebar-bg {
+    background-color: var(--verde-oscuro);
+}
+
+.main-bg {
+    background-color: var(--crema);
 }
