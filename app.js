@@ -65,16 +65,16 @@ function renderizarTareas() {
 
 //funcion para hacer interactivos los circulos del check
 
-function activarEventosCheck(){
+function activarEventosCheck() {
     const botonesCheck = document.querySelectorAll('.btn-completar');
     botonesCheck.forEach(btn => {
-        btn.addEventListener('click', () =>{
+        btn.addEventListener('click', () => {
             const idTarea = parseInt(btn.getAttribute('data-id'));
             /*Esta línea le ordena a JavaScript que busque dentro de la lista de tareas aquella cuyo 
             ID coincida con el botón presionado, guardando el resultado en la constante tareaEncontrada*/
             const tareaEncontrada = tareas.find(tareaIndividual => tareaIndividual.id === idTarea);
 
-            if(tareaEncontrada){
+            if (tareaEncontrada) {
                 tareaEncontrada.completada = !tareaEncontrada.completada;
                 renderizarTareas();
             }
@@ -84,40 +84,78 @@ function activarEventosCheck(){
 
 //evento para capturar los datos del modal y guardarlos
 
-formularioNuevaTarea.addEventListener('submit', function(e){
+formularioNuevaTarea.addEventListener('submit', function (e) {
     e.preventDefault();//evitar que se recargue la pagina 
-    
-//se obtienen los valores escritos en el formulario//
 
-const nuevoTitulo = document.getElementById('tituloTarea').value;
-const nuevaDescripcion = document.getElementById('descripcionTarea').value;
-const horaInicio = document.getElementById('horaInicio').value;
-const horaFin= document.getElementById('horaFin').value;
-const nuevaFecha = document.getElementById('fechaTarea').value;
-const nuevaCategoria = document.getElementById('categoriaTarea').value;
-const nuevaPrioridad = document.getElementById('prioridadTarea').value;
+    //se obtienen los valores escritos en el formulario//
 
-//Objeto de la nueva tarea//
+    const nuevoTitulo = document.getElementById('tituloTarea').value;
+    const nuevaDescripcion = document.getElementById('descripcionTarea').value;
+    const horaInicio = document.getElementById('horaInicio').value;
+    const horaFin = document.getElementById('horaFin').value;
+    const nuevaFecha = document.getElementById('fechaTarea').value;
+    const nuevaCategoria = document.getElementById('categoriaTarea').value;
+    const nuevaPrioridad = document.getElementById('prioridadTarea').value;
+    const alertaError = document.getElementById('alertaError');
 
-const nuevaTarea = {
-    id: tareas.length + 1,
-    titulo: nuevoTitulo,
-    descripcion: nuevaDescripcion,
-    hora: `${horaInicio} - ${horaFin}`,
-    fecha: nuevaFecha,
-    categoria: nuevaCategoria,
-    prioridad: nuevaPrioridad,
-    completada: false
-}
+    //se valida primero con un objeto con las constantes
+    const esValido = validFormFieldInput({
+        titulo: nuevoTitulo,
+        descripcion: nuevaDescripcion,
+        horaInicio: horaInicio,
+        horaFin: horaFin,
+        fecha: nuevaFecha,
+        categoria: nuevaCategoria,
+        prioridad: nuevaPrioridad
+    })
 
-//Se agrega al arreglo
-tareas.push(nuevaTarea);
-//Se actualiza la pantalla
-renderizarTareas();
+    if (!esValido){
+        alertaError.classList.remove('d-none');
+        return
+    }
+    alertaError.classList.add('d-none');
 
-//Se limpia el modal y se cierra el modal
-formularioNuevatarea.reset();
-const modalElement = document.getElementById('modalNuevaTarea');
-const modalBootstrap = bootstrap.Modal.getInstance(modalElement);
-modalBootstrap.hide();
+        //Objeto de la nueva tarea//
+
+        const nuevaTarea = {
+            id: tareas.length + 1,
+            titulo: nuevoTitulo,
+            descripcion: nuevaDescripcion,
+            hora: `${horaInicio} - ${horaFin}`,
+            fecha: nuevaFecha,
+            categoria: nuevaCategoria,
+            prioridad: nuevaPrioridad,
+            completada: false
+        }
+
+
+    //Se agrega al arreglo
+    tareas.push(nuevaTarea);
+    //Se actualiza la pantalla
+    renderizarTareas();
+
+    //Se limpia el modal y se cierra el modal
+    formularioNuevatarea.reset();
+    const modalElement = document.getElementById('modalNuevaTarea');
+    const modalBootstrap = bootstrap.Modal.getInstance(modalElement);
+    modalBootstrap.hide();
 })
+
+//Validaciones
+
+
+function validFormFieldInput(data) {
+    //Si se cumple alguna de estas condiciones es porque existe un error
+    if (
+        !data.titulo || data.titulo.trim() === "" ||
+        !data.descripcion || data.descripcion.trim() === "" ||
+        !data.horaInicio || data.horaInicio.trim() === "" ||
+        !data.horaFin || data.horaFin.trim() === "" ||
+        !data.fecha || data.fecha.trim() === "" ||
+        !data.categoria || data.categoria === "Seleccionar" || data.categoria === "" ||
+        !data.prioridad || data.prioridad === "Seleccionar" || data.prioridad === ""
+    ) {
+        return false; //los datos faltan o son inválidos
+    }
+    return true; //Retorna verdadero si todo cumple
+}

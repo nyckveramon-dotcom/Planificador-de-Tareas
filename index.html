@@ -75,40 +75,45 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
+                <!---Alerta de error-->
+                <div id="alertaError" class="alert alert-danger d-none" role="alert">
+                    Todos los campos con * son obligatorios
+                </div>
+
                 <div class="modal-body">
                     <form id="formularioNuevaTarea">
                         <!---Nombre de la tarea-->
                         <div class="mb-3">
-                            <label for="tituloTarea" class="form-label small fw-bold">Nombre de la tarea</label>
-                            <input type="text" class="form-control rounded-pill px-3" id="tituloTarea" required
+                            <label for="tituloTarea" class="form-label small fw-bold">* Nombre de la tarea</label>
+                            <input type="text" class="form-control rounded-pill px-3" id="tituloTarea" 
                                 placeholder="Ej. Estudiar JS">
                         </div>
                         <!---Descripción-->
                         <div class="mb-3">
-                            <label for="descripcionTarea" class="form-label small fw-bold">Descripción</label>
-                            <input type="text" class="form-control rounded-pill px-3" id="descripcionTarea">
+                            <label for="descripcionTarea" class="form-label small fw-bold">* Descripción</label>
+                            <input type="text" class="form-control rounded-pill px-3" id="descripcionTarea" >
                         </div>
                         <!-- Hora inicio y fin-->
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label for="horaInicio" class="form-label small fw-bold">Hora inicio</label>
-                                <input type="time" class="form-control rounded-pill px-3" id="horaInicio" required>
+                                <label for="horaInicio" class="form-label small fw-bold">* Hora inicio</label>
+                                <input type="time" class="form-control rounded-pill px-3" id="horaInicio" >
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label for="horaFin" class="form-label small fw-bold">Hora final</label>
-                                <input type="time" class="form-control rounded-pill px-3" id="horaFin" required>
+                                <label for="horaFin" class="form-label small fw-bold">* Hora final</label>
+                                <input type="time" class="form-control rounded-pill px-3" id="horaFin" >
                             </div>
                         </div>
                         <!-- Fecha-->
                         <div class="mb-3">
-                            <label for="fechaTarea" class="form-label small fw-bold">Fecha de entrega</label>
-                            <input type="date" class="form-control rounded-pill px-3" id="fechaTarea">
+                            <label for="fechaTarea" class="form-label small fw-bold">* Fecha de entrega</label>
+                            <input type="date" class="form-control rounded-pill px-3" id="fechaTarea" >
                         </div>
                         <!-- Categoría -->
                         <div class="mb-3">
-                            <label for="categoriaTarea" class="form-label small fw-bold">Categoría</label>
-                            <select class="form-select rounded-pill px-3" id="categoriaTarea">
-                                <option selected disabled>Seleccionar</option>
+                            <label for="categoriaTarea" class="form-label small fw-bold">* Categoría</label>
+                            <select class="form-select rounded-pill px-3" id="categoriaTarea" >
+                                <option value="" selected disabled>Seleccionar</option> 
                                 <option value="Estudio">Estudio</option>
                                 <option value="Salud">Salud</option>
                                 <option value="Hogar">Hogar</option>
@@ -118,9 +123,9 @@
                         </div>
                         <!-- Prioridad -->
                         <div class="mb-3">
-                            <label for="prioridadTarea" class="form-label small fw-bold">Prioridad</label>
-                            <select class="form-select rounded-pill px-3" id="prioridadTarea">
-                                <option selected disabled>Seleccionar</option>
+                            <label for="prioridadTarea" class="form-label small fw-bold">* Prioridad</label>
+                            <select class="form-select rounded-pill px-3" id="prioridadTarea" >
+                                <option value="" selected disabled>Seleccionar</option>
                                 <option value="Alta">Alta</option>
                                 <option value="Media">Media</option>
                                 <option value="Baja">Baja</option>
