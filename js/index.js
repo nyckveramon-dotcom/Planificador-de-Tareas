@@ -1,13 +1,17 @@
-//arreglo que almacenara los datos
-let tareas = [];
+//se instancia de taskManager
+const taskManager = new TaskManager();
+
 //Se conecta los elementos del HTML
 const contenedorTareas = document.getElementById('contenedorTareas');
-const formularioNuevatarea = document.getElementById('formularioNuevaTarea')
+const formularioNuevaTarea = document.getElementById('formularioNuevaTarea')
 
 function renderizarTareas() {
     contenedorTareas.innerHTML = '';
 
-    tareas.forEach(tarea => {
+    //Se conecta el array utilizando taskManager para que emplee la misma logica,
+    // pero ahora los datos se almacenan de forma centralizada en taskManager.task
+    
+    taskManager.tasks.forEach(tarea => {
         // Icono si está completada o pendiente
         const iconoCheck = tarea.completada
             ? '<i class="bi bi-check-circle-fill text-success fs-5"></i>'
@@ -72,7 +76,7 @@ function activarEventosCheck() {
             const idTarea = parseInt(btn.getAttribute('data-id'));
             /*Esta línea le ordena a JavaScript que busque dentro de la lista de tareas aquella cuyo 
             ID coincida con el botón presionado, guardando el resultado en la constante tareaEncontrada*/
-            const tareaEncontrada = tareas.find(tareaIndividual => tareaIndividual.id === idTarea);
+            const tareaEncontrada = taskManager.tasks.find(tareaIndividual => tareaIndividual.id === idTarea);
 
             if (tareaEncontrada) {
                 tareaEncontrada.completada = !tareaEncontrada.completada;
@@ -118,7 +122,7 @@ formularioNuevaTarea.addEventListener('submit', function (e) {
         //Objeto de la nueva tarea//
 
         const nuevaTarea = {
-            id: tareas.length + 1,
+            id: taskManager.tasks.length + 1,
             titulo: nuevoTitulo,
             descripcion: nuevaDescripcion,
             hora: `${horaInicio} - ${horaFin}`,
@@ -130,12 +134,12 @@ formularioNuevaTarea.addEventListener('submit', function (e) {
 
 
     //Se agrega al arreglo
-    tareas.push(nuevaTarea);
+    taskManager.tasks.push(nuevaTarea);
     //Se actualiza la pantalla
     renderizarTareas();
 
     //Se limpia el modal y se cierra el modal
-    formularioNuevatarea.reset();
+    formularioNuevaTarea.reset();
     const modalElement = document.getElementById('modalNuevaTarea');
     const modalBootstrap = bootstrap.Modal.getInstance(modalElement);
     modalBootstrap.hide();
@@ -143,9 +147,8 @@ formularioNuevaTarea.addEventListener('submit', function (e) {
 
 //Validaciones
 
-
 function validFormFieldInput(data) {
-    //Si se cumple alguna de estas condiciones es porque existe un error
+    //Si se cumple alguna de estas condiciones es porque existe un error en el formulario
     if (
         !data.titulo || data.titulo.trim() === "" ||
         !data.descripcion || data.descripcion.trim() === "" ||
