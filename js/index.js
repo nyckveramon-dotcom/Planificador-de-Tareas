@@ -7,13 +7,14 @@ const formularioNuevaTarea = document.getElementById('formularioNuevaTarea')
 
 function renderizarTareas() {
     contenedorTareas.innerHTML = '';
-
     //Se conecta el array utilizando taskManager para que emplee la misma logica,
-    // pero ahora los datos se almacenan de forma centralizada en taskManager.task
-    
+    // pero ahora los datos se almacenan de forma centralizada en taskManager.task//
+
     taskManager.tasks.forEach(tarea => {
+        const estaCompletada = tarea.status === 'COMPLETADA';
+
         // Icono si está completada o pendiente
-        const iconoCheck = tarea.completada
+        const iconoCheck = estaCompletada
             ? '<i class="bi bi-check-circle-fill text-success fs-5"></i>'
             : '<i class="bi bi-circle text-muted fs-5"></i>';
 
@@ -28,7 +29,7 @@ function renderizarTareas() {
                             ${iconoCheck}
                         </button>
                         <div>
-                            <h6 class="fw-bold mb-0 ${tarea.completada ? 'text-decoration-line-through text-muted' : ''}">${tarea.titulo}</h6>
+                            <h6 class="fw-bold mb-0 ${estaCompletada ? 'text-decoration-line-through text-muted' : ''}">${tarea.titulo}</h6>
                             <p class="text-muted small mb-1">${tarea.descripcion || ''}</p>
                     
                             <!-- Se muestra fecha y hora -->
@@ -47,6 +48,9 @@ function renderizarTareas() {
                         <span class="badge bg-warning bg-opacity-10 text-dark px-2 py-1 rounded-pill fw-normal ms-1">
                              ${tarea.prioridad}
                         </span>
+                        <span class="badge ${estaCompletada ? 'bg-primary bg-opacity-10 text-primary' : 'bg-secondary bg-opacity-10 text-secondary'} px-2 py-1 rounded-pill fw-normal ms-1">
+                            ${estaCompletada ? 'Completada' : 'Por hacer'}
+                        </span>
                     </div>
 
                     <!-- Derecha: Menú de tres puntos -->
@@ -64,11 +68,9 @@ function renderizarTareas() {
     });
 
     activarEventosCheck();
-
 }
 
 //funcion para hacer interactivos los circulos del check
-
 function activarEventosCheck() {
     const botonesCheck = document.querySelectorAll('.btn-completar');
     botonesCheck.forEach(btn => {
@@ -78,14 +80,19 @@ function activarEventosCheck() {
             ID coincida con el botón presionado, guardando el resultado en la constante tareaEncontrada*/
             const tareaEncontrada = taskManager.tasks.find(tareaIndividual => tareaIndividual.id === idTarea);
 
+            //se valida si la tarea encotrada se encuentra por hacer que el evento la marque completada
+            //y si la tarea encontrada esta completada se puede hacer el evento de marcarse por hacer
             if (tareaEncontrada) {
-                tareaEncontrada.completada = !tareaEncontrada.completada;
+                if (tareaEncontrada.status === 'COMPLETADA') {
+                    tareaEncontrada.status = 'PORHACER';
+                } else {
+                    tareaEncontrada.status = 'COMPLETADA';
+                }
                 renderizarTareas();
             }
-        })
-    })
+        });
+    });
 }
-
 //evento para capturar los datos del modal y guardarlos
 
 formularioNuevaTarea.addEventListener('submit', function (e) {
@@ -113,28 +120,25 @@ formularioNuevaTarea.addEventListener('submit', function (e) {
         prioridad: nuevaPrioridad
     })
 
-    if (!esValido){
+    if (!esValido) {
         alertaError.classList.remove('d-none');
         return
     }
     alertaError.classList.add('d-none');
 
-        //Objeto de la nueva tarea//
+    //Objeto de la nueva tarea a través de taskManager//
 
-        const nuevaTarea = {
-            id: taskManager.tasks.length + 1,
-            titulo: nuevoTitulo,
-            descripcion: nuevaDescripcion,
-            hora: `${horaInicio} - ${horaFin}`,
-            fecha: nuevaFecha,
-            categoria: nuevaCategoria,
-            prioridad: nuevaPrioridad,
-            completada: false
-        }
+    const horario = `${horaInicio} - ${horaFin}`;
 
+    taskManager.addTask(
+        nuevoTitulo,
+        nuevaDescripcion,
+        horario,
+        nuevaFecha,
+        nuevaCategoria,
+        nuevaPrioridad
+    )
 
-    //Se agrega al arreglo
-    taskManager.tasks.push(nuevaTarea);
     //Se actualiza la pantalla
     renderizarTareas();
 
