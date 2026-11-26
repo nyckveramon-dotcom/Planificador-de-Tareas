@@ -54,10 +54,20 @@ function renderizarTareas() {
                     </div>
 
                     <!-- Derecha: Menú de tres puntos -->
+                    
                     <div class="col-md-2 text-end mt-2 mt-md-0">
-                        <button class="btn btn-sm text-muted border-0 bg-transparent">
-                            <i class="bi bi-three-dots-vertical"></i>
-                        </button>
+                        <div class="dropdown">
+                            <button class="btn btn-sm text-muted border-0 bg-transparent" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-three-dots-vertical"></i>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 rounded-3">
+                                <li>
+                                    <button type="button" class="dropdown-item text-danger delete-button" data-task-id="${tarea.id}" >
+                                        Eliminar
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
 
                 </div>
