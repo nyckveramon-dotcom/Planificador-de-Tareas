@@ -5,6 +5,10 @@ const taskManager = new TaskManager();
 const contenedorTareas = document.getElementById('contenedorTareas');
 const formularioNuevaTarea = document.getElementById('formularioNuevaTarea')
 
+
+taskManager.load();
+renderizarTareas();
+
 function renderizarTareas() {
     contenedorTareas.innerHTML = '';
     //Se conecta el array utilizando taskManager para que emplee la misma logica,
@@ -78,6 +82,7 @@ function renderizarTareas() {
     });
 
     activarEventosCheck();
+    activarEventosEliminar();
 }
 
 //funcion para hacer interactivos los circulos del check
@@ -98,11 +103,28 @@ function activarEventosCheck() {
                 } else {
                     tareaEncontrada.status = 'COMPLETADA';
                 }
+
+                taskManager.save();
                 renderizarTareas();
             }
         });
     });
 }
+
+//función para activar el boton Eliminar dentro del menú de 3 puntos
+
+function activarEventosEliminar(){
+    const botonesEliminar = document.querySelectorAll('.delete-button');
+
+    botonesEliminar.forEach(btn => {
+        btn.addEventListener('click', (event) => {
+            const taskId = Number(event.currentTarget.dataset.taskId);
+            taskManager.deleteTask(taskId);
+            renderizarTareas();
+        });
+    });
+}
+
 //evento para capturar los datos del modal y guardarlos
 
 formularioNuevaTarea.addEventListener('submit', function (e) {
@@ -149,7 +171,8 @@ formularioNuevaTarea.addEventListener('submit', function (e) {
         nuevaPrioridad
     )
 
-    //Se actualiza la pantalla
+    //Se actualiza la pantalla y persisten los datos
+    taskManager.save();
     renderizarTareas();
 
     //Se limpia el modal y se cierra el modal
