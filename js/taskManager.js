@@ -69,5 +69,18 @@ class TaskManager {
             this.currentId = parsedData.currentId || 0;
         }
     }
+
+    //función para ubicar la tarea por su id
+    getTaskById(taskId){
+        let foundTask;
+
+        for(let task of this.tasks){
+            if(task.id === taskId){
+                foundTask = task;
+            }
+        }
+
+        return foundTask;
+    }
 }
 

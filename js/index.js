@@ -24,7 +24,7 @@ function renderizarTareas() {
 
         //Se incluye este codigo que se encontraba vacio en el index para las tarjetas
         const tarjetaHTML = `
-            <div class="card border-0 shadow-sm rounded-4 p-3 mb-2">
+            <div class="card border-0 shadow-sm rounded-4 p-3 mb-2" data-task-id="${tarea.id}>
                 <div class="row align-items-center">
             
                     <!-- Izquierda: Círculo, Título, Descripción, Fecha y Hora -->
@@ -93,15 +93,15 @@ function activarEventosCheck() {
             const idTarea = parseInt(btn.getAttribute('data-id'));
             /*Esta línea le ordena a JavaScript que busque dentro de la lista de tareas aquella cuyo 
             ID coincida con el botón presionado, guardando el resultado en la constante tareaEncontrada*/
-            const tareaEncontrada = taskManager.tasks.find(tareaIndividual => tareaIndividual.id === idTarea);
+            const tareaEncontrada = taskManager.getTaskById(idTarea);
 
-            //se valida si la tarea encotrada se encuentra por hacer que el evento la marque completada
+            //se valida si la tarea encotrada se encuentra por hacer que el evento la marque donde
             //y si la tarea encontrada esta completada se puede hacer el evento de marcarse por hacer
             if (tareaEncontrada) {
-                if (tareaEncontrada.status === 'COMPLETADA') {
+                if (tareaEncontrada.status === 'DONE'|| tareaEncontrada.status === 'COMPLETADA' ) {
                     tareaEncontrada.status = 'PORHACER';
                 } else {
-                    tareaEncontrada.status = 'COMPLETADA';
+                    tareaEncontrada.status = 'DONE';
                 }
 
                 taskManager.save();
